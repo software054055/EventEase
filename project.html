@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EventEase – Expense Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fb;
+      color: #333;
+      padding: 40px;
+    }
+
+    .container {
+      background-color: #fff;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+      text-align: left;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 6px;
+      background-color: #ecf0f1;
+      color: #2c3e50;
+      font-weight: bold;
+      text-align: center;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="logo.png" alt="EventEase Logo" class="logo" />
+    <h1>EventEase – Expense Analyzer</h1>
+
+    <label for="category">Expense Category:</label>
+    <input type="text" id="category" placeholder="e.g., Catering, Decorations">
+
+    <label for="description">Expense Description:</label>
+    <input type="text" id="description" placeholder="e.g., Menu, Music">
+
+    <button onclick="analyzeExpense()">Analyze Expense</button>
+
+    <div class="result" id="result">Tag will appear here...</div>
+  </div>
+
+  <script>
+    // Predefined rules
+    const predefinedRules = {
+      groceries: "Essential",
+      rent: "Fixed",
+      travel: "Discretionary",
+      entertainment: "Leisure"
+    };
+
+    // Simulated ML model
+    const MLModel = {
+      isTrained: true,
+      predict: function(description) {
+        const desc = description.toLowerCase();
+        if (desc.includes("ticket")) return "Travel";
+        if (desc.includes("netflix")) return "Entertainment";
+        if (desc.includes("menu") || desc.includes("catering")) return "Event - Food";
+        return "Other";
+      }
+    };
+
+    function analyzeExpense() {
+      const category = document.getElementById("category").value.trim().toLowerCase();
+      const description = document.getElementById("description").value.trim();
+      let tag;
+
+      if (predefinedRules[category]) {
+        tag = predefinedRules[category];
+      } else if (MLModel.isTrained) {
+        tag = MLModel.predict(description);
+      } else {
+        tag = "Uncategorized";
+      }
+
+      document.getElementById("result").innerText = "Tag: " + tag;
+    }
+  </script>
+
+</body>
+</html>
