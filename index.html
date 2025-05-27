@@ -1,139 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="ftend.css" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EventEase – Expense Analyzer</title>
+  <title>Event Ease</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f8fb;
-      color: #333;
-      padding: 40px;
-    }
-
-    .container {
-      background-color: #fff;
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 25px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 24px;
-      color: #2c3e50;
-      margin-bottom: 20px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 15px;
-      display: block;
-      text-align: left;
-    }
-
-    input {
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      width: 100%;
-      font-size: 14px;
-    }
-
-    button {
-      background-color: #3498db;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #2980b9;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 12px;
-      border-radius: 6px;
-      background-color: #ecf0f1;
-      color: #2c3e50;
-      font-weight: bold;
-      text-align: center;
-      font-size: 16px;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    header { background: #6200ea; color: white; padding: 20px; text-align: center; }
+    nav { background: #eee; padding: 10px; text-align: center; }
+    nav a { margin: 10px; text-decoration: none; color: #6200ea; font-weight: bold; }
+    section { padding: 20px; background: white; margin: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    input, select, textarea, button { display: block; margin: 10px 0; padding: 8px; width: 100%; max-width: 400px; }
+    .confirmation { color: green; font-weight: bold; }
   </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <img src="logo.png" alt="EventEase Logo" class="logo" />
-    <h1>EventEase – Expense Analyzer</h1>
+<header>
+  <h1>Event Creation and Management</h1>
+</header>
 
-    <label for="category">Expense Category:</label>
-    <input type="text" id="category" placeholder="e.g., Catering, Decorations">
+<nav>
+  <a href="#create">Create Event</a>
+  <a href="#customize">Customize</a>
+  <a href="#coorganizer">Co-Organizers</a>
+  <a href="#template">Template</a>
+  <a href="#clone">Clone Event</a>
+  <a href="#visibility">Visibility</a>
+  <a href="#analytics">Analytics</a>
+  <a href="#promotions">Promotions</a>
+</nav>
 
-    <label for="description">Expense Description:</label>
-    <input type="text" id="description" placeholder="e.g., Menu, Music">
+<!-- Create Event -->
+<section id="create" class="page-section">
+  <h2>Create Event</h2>
+  <input id="eventTitle" type="text" placeholder="Event Title" />
+  <input id="eventDate" type="datetime-local" />
+  <select id="eventType">
+    <option>Select Event Type</option>
+    <option>Meeting</option>
+    <option>Workshop</option>
+    <option>Wedding</option>
+    <option>Party</option>
+    <option>Webinar</option>
+    <option>Other</option>
+  </select>
+  <input id="eventHost" type="text" placeholder="Event Host" />
+  <button onclick="saveEvent()">Save Event</button>
+  <button onclick="fetchEvents()">View Saved Events</button>
 
-    <button onclick="analyzeExpense()">Analyze Expense</button>
-
-    <div class="result" id="result">Tag will appear here...</div>
+  <!-- Confirmation message -->
+  <div id="confirmation" class="confirmation" style="display: none;">
+    <p id="confirmationMessage"></p>
   </div>
 
-  <script>
-    // Predefined rules
-    const predefinedRules = {
-      groceries: "Essential",
-      rent: "Fixed",
-      travel: "Discretionary",
-      entertainment: "Leisure"
-    };
+  <!-- Event list output -->
+  <div id="eventList"></div>
+</section>
 
-    // Simulated ML model
-    const MLModel = {
-      isTrained: true,
-      predict: function(description) {
-        const desc = description.toLowerCase();
-        if (desc.includes("ticket")) return "Travel";
-        if (desc.includes("netflix")) return "Entertainment";
-        if (desc.includes("menu") || desc.includes("catering")) return "Event - Food";
-        return "Other";
-      }
-    };
+<!-- Customize Event -->
+<section id="customize" class="page-section">
+  <h2>Customize Event Page</h2>
+  <input id="eventImage" type="file" accept="image/*" />
+  <input id="customTitle" type="text" placeholder="Event Title" />
+  <input id="eventLocation" type="text" placeholder="Location" />
+  <label>Color Theme:</label>
+  <select id="colorTheme">
+    <option>Purple</option>
+    <option>Yellow</option>
+    <option>Green</option>
+    <option>Red</option>
+    <option>Blue</option>
+  </select>
+  <button onclick="saveCustomization()">Save and Continue</button>
+</section>
 
-    function analyzeExpense() {
-      const category = document.getElementById("category").value.trim().toLowerCase();
-      const description = document.getElementById("description").value.trim();
-      let tag;
+<!-- Co-organizer -->
+<section id="coorganizer" class="page-section">
+  <h2>Co-Organizer Management</h2>
+  <input id="coOrganizerEmail" type="email" placeholder="Enter Email" />
+  <select id="coOrganizerRole">
+    <option>Assign Role</option>
+    <option>Co-organizer</option>
+    <option>Moderator</option>
+    <option>Live Streamer</option>
+  </select>
+  <label><input id="notifyOrganizer" type="checkbox" /> Notify Organizer</label>
+  <label><input id="grantAccess" type="checkbox" /> Grant Access</label>
+  <button onclick="addCoOrganizer()">Invite</button>
+  <button onclick="displayCoOrganizers()">View Co-Organizers</button>
+</section>
 
-      if (predefinedRules[category]) {
-        tag = predefinedRules[category];
-      } else if (MLModel.isTrained) {
-        tag = MLModel.predict(description);
-      } else {
-        tag = "Uncategorized";
-      }
+<!-- Template Design -->
+<section id="template" class="page-section">
+  <h2>Choose and Customize a Template</h2>
 
-      document.getElementById("result").innerText = "Tag: " + tag;
-    }
-  </script>
+  <input type="text" id="templateSearch" placeholder="Search Templates (e.g., Webinar, Wedding)" />
+  
+  <label>
+    Filter by Category:
+    <select>
+      <option>All</option>
+      <option>Professional</option>
+      <option>Fun</option>
+      <option>Minimal</option>
+      <option>Elegant</option>
+    </select>
+  </label>
+
+  <div style="margin-top: 20px;">
+    <h3>Preview:</h3>
+    <p>Template: <span id="previewTemplate">None selected</span></p>
+    <button onclick="selectTemplate('Webinar Pro')">Webinar Pro</button>
+    <button onclick="selectTemplate('Modern Wedding')">Modern Wedding</button>
+    <button onclick="selectTemplate('Minimal Talk')">Minimal Talk</button>
+    <br/><br/>
+    <button onclick="applyTemplate()">Apply Design</button>
+    <button onclick="saveAsFavorite()">Save as Favorite</button>
+  </div>
+</section>
+
+<!-- Clone Event -->
+<section id="clone" class="page-section">
+  <h2>Clone an Existing Event</h2>
+
+  <label>
+    Search Past Events:
+    <input type="text" id="cloneSearch" placeholder="e.g. Product Launch" />
+  </label>
+
+  <label>
+    Recently Used:
+    <select onchange="prefillClone(this.value)">
+      <option value="">Select an event</option>
+      <option value="Launch 2023">Launch 2023</option>
+      <option value="Design Sprint">Design Sprint</option>
+      <option value="All Hands">All Hands</option>
+    </select>
+  </label>
+
+  <label>
+    Title:
+    <input type="text" id="cloneTitle" placeholder="Modified Title" />
+  </label>
+
+  <label>
+    Date:
+    <input type="date" id="cloneDate" />
+  </label>
+
+  <label>
+    Tag this clone (optional):
+    <input type="text" id="cloneTag" placeholder="e.g. Q3 Replay" />
+  </label>
+
+  <button onclick="cloneEvent()">Save Cloned Event</button>
+</section>
+
+<!-- Visibility -->
+<section id="visibility" class="page-section">
+  <h2>Event Visibility Settings</h2>
+
+  <label>
+    <strong>Visibility:</strong>
+    <select id="visibilityStatus">
+      <option value="public">Public - Visible to everyone</option>
+      <option value="link">Unlisted - Visible to people with link</option>
+      <option value="private">Private - Invite only</option>
+    </select>
+  </label>
+
+  <label>
+    <strong>Joining Permission:</strong>
+    <select id="joiningPermission">
+      <option>Anyone can join</option>
+      <option>Ask to join (Approval required)</option>
+      <option>Only invited users can join</option>
+    </select>
+  </label>
+
+  <label>
+    <strong>Invite Control:</strong>
+    <select id="inviteControl">
+      <option>Email-based invites only</option>
+      <option>Allow .edu domain</option>
+      <option>Allow link sharing</option>
+    </select>
+  </label>
+
+  <label>
+    Access Expiration (optional):
+    <input id="accessExpiration" type="datetime-local" />
+  </label>
+
+  <label>
+    <strong>Role Access Control:</strong>
+    <ul>
+      <li><input id="roleOrganizer" type="checkbox" checked /> Organizer</li>
+      <li><input id="roleCohost" type="checkbox" checked /> Co-host</li>
+      <li><input id="roleViewer" type="checkbox" /> Viewer</li>
+      <li><input id="roleModerator" type="checkbox" /> Moderator</li>
+    </ul>
+  </label>
+
+  <button onclick="saveVisibilitySettings()">Save Visibility Settings</button>
+</section>
+
+<!-- Analytics -->
+<section id="analytics" class="page-section">
+  <h2>Event Analytics Dashboard</h2>
+
+  <label>
+    Time Range:
+    <select>
+      <option>Last 7 days</option>
+      <option>Last 30 days</option>
+      <option>Custom</option>
+    </select>
+  </label>
+
+  <div>
+    <h3>Visitor Traffic</h3>
+    <p>Google: 2,500 | Facebook: 1,800 | LinkedIn: 1,200</p>
+    <progress value="2500" max="5000"></progress><br />
+    <progress value="1800" max="5000"></progress><br />
+    <progress value="1200" max="5000"></progress>
+  </div>
+
+  <div>
+    <h3>RSVP Summary</h3>
+    <button onclick="alert('Showing RSVP list...')">Toggle RSVP List</button>
+    <ul>
+      <li>Alice - ✅ Confirmed</li>
+      <li>Bob - ❌ Declined</li>
+      <li>Charlie - ⏳ Pending</li>
+    </ul>
+  </div>
+
+  <button onclick="exportAnalytics()">Export as CSV</button>
+</section>
+
+<!-- Promotions -->
+<section id="promotions" class="page-section">
+  <h2>Promote Your Event</h2>
+
+  <label>
+    <strong>Social Sharing:</strong><br/>
+    <button onclick="shareToSocial('Facebook')">📘 Facebook</button>
+    <button onclick="shareToSocial('Twitter')">🐦 Twitter</button>
+    <button onclick="shareToSocial('Instagram')">📸 Instagram</button>
+    <button onclick="alert('Link copied to clipboard!')">🔗 Copy Link</button>
+  </label>
+
+  <label>
+    <strong>Design Your Badge:</strong><br/>
+    Shape:
+    <select>
+      <option>Round</option>
+      <option>Square</option>
+    </select><br/>
+    Color:
+    <select>
+      <option>Gold</option>
+      <option>Silver</option>
+      <option>Bronze</option>
+    </select>
+  </label>
+
+  <label>
+    <strong>Hashtag Suggestions:</strong><br/>
+    <input type="text" placeholder="Base topic (e.g., launch)" />
+    <button onclick="generateHashtags()">Generate</button>
+    <ul id="hashtagList"></ul>
+  </label>
+
+  <label>
+    <strong>QR Code:</strong><br/>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://eventease.com/my-event&size=150x150" alt="QR Code" />
+  </label>
+</section>
+
+<!-- Confirmation -->
+<section id="confirmation" class="confirmation" style="display: none;">
+  <p id="confirmationMessage">✅ Action completed successfully!</p>
+</section>
+
+<script src="ft.js"></script>
 
 </body>
 </html>

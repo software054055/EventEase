@@ -1,0 +1,160 @@
+/* Reset and base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9fb;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background: linear-gradient(to right, #6200ea, #3700b3);
+  color: #fff;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+nav a {
+  padding: 15px 20px;
+  margin: 5px;
+  text-decoration: none;
+  color: #6200ea;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+nav a:hover {
+  background-color: #eee;
+}
+
+/* Section Styling */
+section {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 30px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+section h2 {
+  margin-bottom: 20px;
+  color: #3700b3;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Inputs and Buttons */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #6200ea;
+  outline: none;
+}
+
+button {
+  background-color: #6200ea;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+button:hover {
+  background-color: #3700b3;
+}
+
+/* Labels and Checkboxes */
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+}
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Confirmation Section */
+.confirmation {
+  background-color: #e0ffe5;
+  color: #207d38;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #a3d7a5;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  section {
+    margin: 20px 10px;
+    padding: 20px 15px;
+  }
+}
+progress {
+  width: 100%;
+  height: 16px;
+  margin-bottom: 8px;
+  appearance: none;
+}
+progress::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 10px;
+}
+progress::-webkit-progress-value {
+  background-color: #6200ea;
+  border-radius: 10px;
+}
+#eventList {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f0f0ff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+#eventList ul {
+  padding-left: 20px;
+}
+#eventList li {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
